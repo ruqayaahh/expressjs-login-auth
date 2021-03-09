@@ -77,7 +77,7 @@ app.use("/users/:email", (req, res, next) => {
   }
   res.status(404).json({
     status: "Failed",
-    message: 'Account does not exist. Kindly signup'
+    message: 'Account does not exist. Kindly login'
   });
 });
 // when logging in
@@ -91,12 +91,16 @@ app.get("/users/:email", (req, res) => {
       data: req.body
     });
   }
+  res.status(401).json({
+    status: "Unauthorized login",
+    message: "Email or password is incorrect"
+  })
 });
 
 // when editing password
 app.put("/users/:email", (req, res) => {
   const currentUser = { ...req.data, password: req.body.password};
-  const index = users.findIndex((el) => el.email === email));
+  const index = users.findIndex((el) => el.email === email)
     users[index] = currentUser;
     res.status(200).json({
         status: "Successful changed password",
