@@ -77,7 +77,7 @@ app.use("/users/:email", (req, res, next) => {
   }
   res.status(404).json({
     status: "Failed",
-    message: 'Account does not exist. Kindly login'
+    message: 'Account does not exist. Kindly signup'
   });
 });
 // when logging in
@@ -94,9 +94,15 @@ app.get("/users/:email", (req, res) => {
 });
 
 // when editing password
-app.patch("/users/:email", (req, res) => {
-  const 
-
+app.put("/users/:email", (req, res) => {
+  const currentUser = { ...req.data, password: req.body.password};
+  const index = users.findIndex((el) => el.email === email));
+    users[index] = currentUser;
+    res.status(200).json({
+        status: "Successful changed password",
+        message: `Password updated successfully`,
+        data: currentUser,
+    });
   });
 
 
