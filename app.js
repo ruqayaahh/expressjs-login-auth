@@ -42,18 +42,6 @@ const users = [
   },
 ];
 
-app.use("/users/:email", (req, res, next) => {
-  const { email } = req.params;
-  const currentUser = users.find((el) => el.email === email);
-  if(currentUser) {
-    req.data = currentUser;
-    return next();
-  }
-  res.status(404).json({
-    status: "Failed",
-    message: 'Account does not exist. Kindly login'
-  });
-});
 
 app.get("/users", (req, res) => res.status(200).json(users));
 
@@ -80,29 +68,36 @@ app.post("/users/register", (req, res) => {
   })
 });
 
+app.use("/users/:email", (req, res, next) => {
+  const { email } = req.params;
+  const currentUser = users.find((el) => el.email === email);
+  if(currentUser) {
+    req.data = currentUser;
+    return next();
+  }
+  res.status(404).json({
+    status: "Failed",
+    message: 'Account does not exist. Kindly login'
+  });
+});
 // when logging in
 app.get("/users/:email", (req, res) => { 
-  return res.status(200).json({
-    status: "Successfully logged in",
-    message: "User fetched successfully",
-    data: req.data,
-  })
+  const { password } = req.body;
+  if(currentUser.password === password) {
+    req.body = { email, password };
+    return res.status(200).json({
+      status: "Successfully logged in",
+      message: "User fetched successfully",
+      data: req.body
+    });
+  }
 });
 
+// when editing password
+app.patch("/users/:email", (req, res) => {
+  const 
 
-// // when editing password
-// app.patch(, (req, res) =>
-//     res.send()
-// );
+  });
 
-// // when editing firstname
-// app.put( ,(req, res) =>
-//     res.send
-// )
-
-// // when editing lastname
-// app.put( ,(req, res) =>
-//     res.send
-// )
 
 app.listen(3000);
